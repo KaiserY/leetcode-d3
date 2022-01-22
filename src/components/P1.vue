@@ -29,6 +29,7 @@ onMounted(() => {
     id: "inputMatrixVLine",
     name: "i",
     index: 0,
+    upper: true,
   };
 
   var outputMatrix: D3Matrix = {

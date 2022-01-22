@@ -18,6 +18,7 @@ export interface D3MatrixVLine {
   id: string;
   name: string;
   index: number;
+  upper: boolean;
 }
 
 export interface D3MatrixHLine {
@@ -26,19 +27,26 @@ export interface D3MatrixHLine {
   index: number;
 }
 
+export interface D3MatrixPoint {
+  id: string;
+  name: string;
+  x: number;
+  y: number;
+}
+
 export function drawD3Matrix(
   d3js: d3.Selection<any, unknown, null, undefined>,
   matrix: D3Matrix
 ) {
-  var gD3Array: d3.Selection<any, unknown, null, undefined> = d3js.select(
+  var gD3Matrix: d3.Selection<any, unknown, null, undefined> = d3js.select(
     "#" + matrix.id
   );
 
-  if (gD3Array.empty()) {
-    gD3Array = d3js.append("g").attr("id", matrix.id);
+  if (gD3Matrix.empty()) {
+    gD3Matrix = d3js.append("g").attr("id", matrix.id);
   }
 
-  gD3Array.attr("transform", "translate(" + matrix.x + ", " + matrix.y + ")");
+  gD3Matrix.attr("transform", "translate(" + matrix.x + ", " + matrix.y + ")");
 
   if (matrix.renderData == null) {
     matrix.renderData = [];
@@ -66,7 +74,7 @@ export function drawD3Matrix(
     }
   }
 
-  gD3Array
+  gD3Matrix
     .selectAll("rect")
     .data(matrix.renderData)
     .join(
@@ -86,7 +94,7 @@ export function drawD3Matrix(
     .attr("stroke", "black")
     .attr("stroke-width", 1);
 
-  gD3Array
+  gD3Matrix
     .selectAll("text")
     .data(matrix.renderData)
     .join(
@@ -155,6 +163,10 @@ export function drawD3MatrixVLine(
   var baseX = matrix.cellWidth * matrixVLine.index + matrix.cellWidth / 2;
   var baseY = -matrix.cellHeight;
 
+  if (!matrixVLine.upper) {
+    baseY = matrix.data.length * matrix.cellHeight;
+  }
+
   gD3MatrixVLine
     .selectAll("line")
     .data([matrixVLine.index])
@@ -163,9 +175,9 @@ export function drawD3MatrixVLine(
         enter
           .append("line")
           .attr("x1", baseX)
-          .attr("y1", baseY + 12)
+          .attr("y1", matrixVLine.upper ? baseY + 12 : baseY + 12)
           .attr("x2", baseX)
-          .attr("y2", baseY + 18)
+          .attr("y2", matrixVLine.upper ? baseY + 18 : baseY + 6)
           .attr("stroke", "black")
           .attr("stroke-width", 1)
           .attr("marker-end", "url(#arrow)"),
@@ -175,9 +187,9 @@ export function drawD3MatrixVLine(
           .duration(500)
           .ease(d3.easeLinear)
           .attr("x1", baseX)
-          .attr("y1", baseY + 12)
+          .attr("y1", matrixVLine.upper ? baseY + 12 : baseY + 12)
           .attr("x2", baseX)
-          .attr("y2", baseY + 18),
+          .attr("y2", matrixVLine.upper ? baseY + 18 : baseY + 6),
       (exit) => exit
     );
 
@@ -189,7 +201,7 @@ export function drawD3MatrixVLine(
         enter
           .append("text")
           .attr("x", baseX)
-          .attr("y", baseY + 8)
+          .attr("y", matrixVLine.upper ? baseY + 8 : baseY + 16)
           .attr("font-family", "Arial Black")
           .attr("font-size", matrix.cellFontSize)
           .attr("fill", "black")
@@ -202,7 +214,7 @@ export function drawD3MatrixVLine(
           .duration(500)
           .ease(d3.easeLinear)
           .attr("x", baseX)
-          .attr("y", baseY + 8)
+          .attr("y", matrixVLine.upper ? baseY + 8 : baseY + 16)
           .text(matrixVLine.name + "=" + matrixVLine.index),
       (exit) => exit
     );
@@ -237,6 +249,48 @@ export function drawD3MatrixVLine(
           .attr("y", (_, i) => {
             return matrix.cellHeight * i;
           }),
+      (exit) => exit
+    );
+}
+
+export function drawD3MatrixPoint(
+  d3js: d3.Selection<any, unknown, null, undefined>,
+  matrix: D3Matrix,
+  matrixPoint: D3MatrixPoint
+) {
+  var gD3MatrixVLine: d3.Selection<any, unknown, null, undefined> = d3js.select(
+    "#" + matrixPoint.id
+  );
+
+  if (gD3MatrixVLine.empty()) {
+    gD3MatrixVLine = d3js.append("g").attr("id", matrixPoint.id).lower();
+  }
+
+  gD3MatrixVLine.attr(
+    "transform",
+    "translate(" + matrix.x + ", " + matrix.y + ")"
+  );
+
+  gD3MatrixVLine
+    .selectAll("rect")
+    .data([matrixPoint.name])
+    .join(
+      (enter) =>
+        enter
+          .append("rect")
+          .attr("x", matrixPoint.x * matrix.cellWidth)
+          .attr("y", matrixPoint.y * matrix.cellHeight)
+          .attr("height", matrix.cellHeight)
+          .attr("width", matrix.cellWidth)
+          .style("fill", "gray")
+          .style("opacity", 0.5),
+      (update) =>
+        update
+          .transition()
+          .duration(500)
+          .ease(d3.easeLinear)
+          .attr("x", matrixPoint.x * matrix.cellWidth)
+          .attr("y", matrixPoint.y * matrix.cellHeight),
       (exit) => exit
     );
 }

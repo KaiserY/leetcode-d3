@@ -17,13 +17,8 @@ onMounted(() => {
 
   var inputMatrix: D3Matrix = {
     id: "inputMatrix",
-    data: [
-      ["2", "4", "3"],
-      ["5", "6", "4"],
-      ["", "", ""],
-      ["", "", ""],
-    ],
-    x: 160,
+    data: [["", "", "-", "4", "2", "", "w", "o", "r", "d"]],
+    x: 60,
     y: 24,
     cellHeight: 24,
     cellWidth: 24,
@@ -37,55 +32,59 @@ onMounted(() => {
     upper: true,
   };
 
+  var outputMatrix: D3Matrix = {
+    id: "outputMatrix",
+    data: [["", "", "", "", "", "", "", "", "", ""]],
+    x: 60,
+    y: 72,
+    cellHeight: 24,
+    cellWidth: 24,
+    cellFontSize: "8px",
+  };
+
   drawD3Matrix(d3js, inputMatrix);
   drawD3MatrixVLine(d3js, inputMatrix, inputMatrixVLine);
+  drawD3Matrix(d3js, outputMatrix);
 
   var step = 0;
 
   setInterval(() => {
     switch (step) {
       case 0:
-        inputMatrix.data = [
-          ["2", "4", "3"],
-          ["5", "6", "4"],
-          ["", "", ""],
-          ["", "", ""],
-        ];
         inputMatrixVLine.index = 0;
+        outputMatrix.data = [["", "", "", "", "", "", "", "", "", ""]];
         break;
       case 1:
-        inputMatrix.data = [
-          ["2", "4", "3"],
-          ["5", "6", "4"],
-          ["", "", ""],
-          ["7", "", ""],
-        ];
         inputMatrixVLine.index = 0;
+        outputMatrix.data = [["", "", "", "", "", "", "", "", "", ""]];
         break;
       case 2:
-        inputMatrix.data = [
-          ["2", "4", "3"],
-          ["5", "6", "4"],
-          ["", "", "1"],
-          ["7", "0", ""],
-        ];
         inputMatrixVLine.index = 1;
+        outputMatrix.data = [["", "", "", "", "", "", "", "", "", ""]];
         break;
       case 3:
-        inputMatrix.data = [
-          ["2", "4", "3"],
-          ["5", "6", "4"],
-          ["", "", "1"],
-          ["7", "0", "8"],
-        ];
         inputMatrixVLine.index = 2;
+        outputMatrix.data = [["", "", "", "", "", "", "", "", "", "-"]];
+        break;
+      case 4:
+        inputMatrixVLine.index = 3;
+        outputMatrix.data = [["", "", "", "", "", "", "", "", "-", "4"]];
+        break;
+      case 5:
+        inputMatrixVLine.index = 4;
+        outputMatrix.data = [["", "", "", "", "", "", "", "-", "4", "2"]];
+        break;
+      case 6:
+        inputMatrixVLine.index = 5;
+        outputMatrix.data = [["", "", "", "", "", "", "", "-", "4", "2"]];
         break;
     }
 
     drawD3Matrix(d3js, inputMatrix);
     drawD3MatrixVLine(d3js, inputMatrix, inputMatrixVLine);
+    drawD3Matrix(d3js, outputMatrix);
 
-    if (step > 3) {
+    if (step > 6) {
       step = 0;
     } else {
       step += 1;
