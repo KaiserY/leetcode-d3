@@ -5,12 +5,7 @@
 <script setup lang="ts">
 import * as d3 from "d3";
 import { onMounted, ref } from "vue";
-import {
-  D3Matrix,
-  D3MatrixVLine,
-  drawD3Matrix,
-  drawD3MatrixVLine,
-} from "../d3js/matrix";
+import { D3Matrix, drawD3Matrix } from "../d3js/matrix";
 
 onMounted(() => {
   const d3js = d3.select(d3svg.value).attr("viewBox", [0, 0, 400, 200]);

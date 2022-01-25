@@ -11,3 +11,8 @@
 - [9. Palindrome Number](leetcode/p9.md)
 - [10. Regular Expression Matching](leetcode/p10.md)
 - [11. Container With Most Water](leetcode/p11.md)
+- [12. Integer to Roman](leetcode/p12.md)
+- [13. Roman to Integer](leetcode/p13.md)
+- [14. Longest Common Prefix](leetcode/p14.md)
+- [15. 3Sum](leetcode/p15.md)
+- [16. 3Sum Closest](leetcode/p16.md)

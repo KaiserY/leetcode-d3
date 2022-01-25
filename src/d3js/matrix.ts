@@ -2,7 +2,7 @@ import * as d3 from "d3";
 
 export interface D3Matrix {
   id: string;
-  data: string[][];
+  data: any[][];
   x: number;
   y: number;
   cellHeight: number;
