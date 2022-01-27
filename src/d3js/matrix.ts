@@ -10,8 +10,8 @@ export interface D3Matrix {
   cellFontSize: string;
   renderData?: string[];
   OldRenderData?: string[];
-  renderX?: number[];
-  renderY?: number[];
+  renderX?: any[];
+  renderY?: any[];
 }
 
 export interface D3MatrixVLine {
@@ -48,17 +48,9 @@ export function drawD3Matrix(
 
   gD3Matrix.attr("transform", "translate(" + matrix.x + ", " + matrix.y + ")");
 
-  if (matrix.renderData == null) {
-    matrix.renderData = [];
-  }
-
-  if (matrix.renderX == null) {
-    matrix.renderX = [];
-  }
-
-  if (matrix.renderY == null) {
-    matrix.renderY = [];
-  }
+  matrix.renderData = [];
+  matrix.renderX = [];
+  matrix.renderY = [];
 
   if (matrix.OldRenderData == null) {
     matrix.OldRenderData = [];
@@ -74,13 +66,21 @@ export function drawD3Matrix(
     }
   }
 
+  if (matrix.renderData!.length != matrix.OldRenderData!.length) {
+    matrix.OldRenderData = [];
+  }
+
   gD3Matrix
     .selectAll("rect")
     .data(matrix.renderData)
     .join(
-      (enter) => enter.append("rect"),
+      (enter) => {
+        var rect = enter.append("rect");
+        rect.style("opacity", 0).transition().duration(500).style("opacity", 1);
+        return rect;
+      },
       (update) => update,
-      (exit) => exit
+      (exit) => exit.transition().duration(500).style("opacity", 0).remove()
     )
     .attr("x", (_, i) => {
       return matrix.cellWidth * matrix.renderX![i];
@@ -98,8 +98,16 @@ export function drawD3Matrix(
     .selectAll("text")
     .data(matrix.renderData)
     .join(
-      (enter) => enter.append("text").text((d) => d),
-
+      (enter) => {
+        var text = enter.append("text");
+        text
+          .style("opacity", 0)
+          .transition()
+          .duration(500)
+          .style("opacity", 1)
+          .text((d) => d);
+        return text;
+      },
       (update) => {
         update
           .filter((d, i) => d != matrix.OldRenderData![i])
@@ -171,16 +179,22 @@ export function drawD3MatrixVLine(
     .selectAll("line")
     .data([matrixVLine.index])
     .join(
-      (enter) =>
-        enter
-          .append("line")
+      (enter) => {
+        var line = enter.append("line");
+        line
           .attr("x1", baseX)
           .attr("y1", matrixVLine.upper ? baseY + 12 : baseY + 12)
           .attr("x2", baseX)
           .attr("y2", matrixVLine.upper ? baseY + 18 : baseY + 6)
           .attr("stroke", "black")
           .attr("stroke-width", 1)
-          .attr("marker-end", "url(#arrow)"),
+          .attr("marker-end", "url(#arrow)")
+          .style("opacity", 0)
+          .transition()
+          .duration(500)
+          .style("opacity", 1);
+        return line;
+      },
       (update) =>
         update
           .transition()
@@ -197,9 +211,9 @@ export function drawD3MatrixVLine(
     .selectAll("text")
     .data([matrixVLine.index])
     .join(
-      (enter) =>
-        enter
-          .append("text")
+      (enter) => {
+        var text = enter.append("text");
+        text
           .attr("x", baseX)
           .attr("y", matrixVLine.upper ? baseY + 8 : baseY + 16)
           .attr("font-family", "Arial Black")
@@ -207,7 +221,13 @@ export function drawD3MatrixVLine(
           .attr("fill", "black")
           .style("text-anchor", "middle")
           .style("alignment-baseline", "central")
-          .text(matrixVLine.name + "=" + matrixVLine.index),
+          .text(matrixVLine.name + "=" + matrixVLine.index)
+          .style("opacity", 0)
+          .transition()
+          .duration(500)
+          .style("opacity", 1);
+        return text;
+      },
       (update) =>
         update
           .transition()

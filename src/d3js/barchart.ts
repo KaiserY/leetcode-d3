@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-import { color } from "d3";
 
 export interface D3BarChart {
   id: string;

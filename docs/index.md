@@ -16,3 +16,6 @@
 - [14. Longest Common Prefix](leetcode/p14.md)
 - [15. 3Sum](leetcode/p15.md)
 - [16. 3Sum Closest](leetcode/p16.md)
+- [17. Letter Combinations of a Phone Number](leetcode/p17.md)
+- [18. 4Sum](leetcode/p18.md)
+- [19. Remove Nth Node From End of List](leetcode/p19.md)
