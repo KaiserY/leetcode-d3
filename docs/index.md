@@ -19,3 +19,4 @@
 - [17. Letter Combinations of a Phone Number](leetcode/p17.md)
 - [18. 4Sum](leetcode/p18.md)
 - [19. Remove Nth Node From End of List](leetcode/p19.md)
+- [20. Valid Parentheses](leetcode/p20.md)
