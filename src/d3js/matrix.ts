@@ -10,8 +10,6 @@ export interface D3Matrix {
   cellFontSize: string;
   renderData?: string[];
   OldRenderData?: string[];
-  renderX?: any[];
-  renderY?: any[];
 }
 
 export interface D3MatrixVLine {
@@ -48,25 +46,38 @@ export function drawD3Matrix(
 
   gD3Matrix.attr("transform", "translate(" + matrix.x + ", " + matrix.y + ")");
 
-  matrix.renderData = [];
-  matrix.renderX = [];
-  matrix.renderY = [];
+  var xLength = 0;
+  var yLength = Math.max(0, matrix.data.length);
 
-  if (matrix.OldRenderData == null) {
-    matrix.OldRenderData = [];
+  for (let i = 0; i < matrix.data.length; i++) {
+    xLength = Math.max(xLength, matrix.data[i].length);
+  }
+
+  var dataLength = xLength * yLength;
+  var renderX: number[] = [];
+  var renderY: number[] = [];
+
+  matrix.renderData = [];
+
+  for (let i = 0; i < yLength; i++) {
+    for (let j = 0; j < xLength; j++) {
+      var index = xLength * i + j;
+
+      renderX[index] = j;
+      renderY[index] = i;
+      matrix.renderData[index] = "";
+    }
   }
 
   for (let i = 0; i < matrix.data.length; i++) {
     for (let j = 0; j < matrix.data[i].length; j++) {
-      var index = matrix.data[i].length * i + j;
+      var index = xLength * i + j;
 
-      matrix.renderX[index] = j;
-      matrix.renderY[index] = i;
       matrix.renderData[index] = matrix.data[i][j];
     }
   }
 
-  if (matrix.renderData!.length != matrix.OldRenderData!.length) {
+  if (matrix.OldRenderData == null) {
     matrix.OldRenderData = [];
   }
 
@@ -83,10 +94,10 @@ export function drawD3Matrix(
       (exit) => exit.transition().duration(500).style("opacity", 0).remove()
     )
     .attr("x", (_, i) => {
-      return matrix.cellWidth * matrix.renderX![i];
+      return matrix.cellWidth * renderX![i];
     })
     .attr("y", (_, i) => {
-      return matrix.cellHeight * matrix.renderY![i];
+      return matrix.cellHeight * renderY![i];
     })
     .attr("height", matrix.cellHeight)
     .attr("width", matrix.cellWidth)
@@ -121,10 +132,10 @@ export function drawD3Matrix(
       (exit) => exit.transition().duration(500).style("opacity", 0).remove()
     )
     .attr("x", (_, i) => {
-      return matrix.renderX![i] * matrix.cellWidth + matrix.cellWidth / 2;
+      return renderX![i] * matrix.cellWidth + matrix.cellWidth / 2;
     })
     .attr("y", (_, i) => {
-      return matrix.cellHeight * matrix.renderY![i] + matrix.cellHeight / 2;
+      return matrix.cellHeight * renderY![i] + matrix.cellHeight / 2;
     })
     .attr("font-family", "Arial Black")
     .attr("font-size", matrix.cellFontSize)

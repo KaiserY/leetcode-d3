@@ -20,3 +20,5 @@
 - [18. 4Sum](leetcode/p18.md)
 - [19. Remove Nth Node From End of List](leetcode/p19.md)
 - [20. Valid Parentheses](leetcode/p20.md)
+- [21. Merge Two Sorted Lists](leetcode/p21.md)
+- [22. Generate Parentheses](leetcode/p22.md)

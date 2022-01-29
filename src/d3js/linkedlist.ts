@@ -50,14 +50,6 @@ export function drawD3BarChart(
 
   linkedList.renderData.push("null");
 
-  if (linkedList.renderData!.length != linkedList.OldRenderData!.length) {
-    for (let i = 0; i < linkedList.renderData.length; i++) {
-      if (linkedList.renderData[i] != linkedList.OldRenderData[i]) {
-        linkedList.OldRenderData[i] = "";
-      }
-    }
-  }
-
   gD3LinkedList
     .selectAll("rect")
     .data(linkedList.renderData)
