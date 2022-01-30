@@ -35,8 +35,8 @@ onMounted(() => {
     cellFontSize: "8px",
   };
 
-  var outpuLinkedList: D3LinkedList = {
-    id: "outpuLinkedList",
+  var outputLinkedList: D3LinkedList = {
+    id: "outputLinkedList",
     data: [],
     x: 60,
     y: 120,
@@ -49,18 +49,18 @@ onMounted(() => {
 
   var steps: Step[] = [{ output: [] }];
 
-  var aa = mergeTwoLists(
+  mergeTwoLists(
     new ListNode(1, new ListNode(2, new ListNode(4, null))),
     new ListNode(1, new ListNode(3, new ListNode(4, null))),
     steps
   );
 
   setInterval(() => {
-    outpuLinkedList.data = steps[stepIndex].output;
+    outputLinkedList.data = steps[stepIndex].output;
 
     drawD3BarChart(d3js, firstLinkedList);
     drawD3BarChart(d3js, secondLinkedList);
-    drawD3BarChart(d3js, outpuLinkedList);
+    drawD3BarChart(d3js, outputLinkedList);
 
     stepIndex += 1;
 

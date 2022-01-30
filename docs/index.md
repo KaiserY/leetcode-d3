@@ -22,3 +22,4 @@
 - [20. Valid Parentheses](leetcode/p20.md)
 - [21. Merge Two Sorted Lists](leetcode/p21.md)
 - [22. Generate Parentheses](leetcode/p22.md)
+- [23. Merge k Sorted Lists](leetcode/p23.md)
