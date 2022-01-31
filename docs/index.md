@@ -23,3 +23,4 @@
 - [21. Merge Two Sorted Lists](leetcode/p21.md)
 - [22. Generate Parentheses](leetcode/p22.md)
 - [23. Merge k Sorted Lists](leetcode/p23.md)
+- [24. Swap Nodes in Pairs](leetcode/p24.md)
