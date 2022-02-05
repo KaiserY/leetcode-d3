@@ -24,3 +24,5 @@
 - [22. Generate Parentheses](leetcode/p22.md)
 - [23. Merge k Sorted Lists](leetcode/p23.md)
 - [24. Swap Nodes in Pairs](leetcode/p24.md)
+- [25. Reverse Nodes in k-Group](leetcode/p25.md)
+- [26. Remove Duplicates from Sorted Array](leetcode/p26.md)

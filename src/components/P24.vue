@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
 import * as d3 from "d3";
-import { axisRight } from "d3";
 import { onMounted, ref } from "vue";
 import {
   D3LinkedList,
