@@ -1,24 +1,20 @@
 {
-  "name": "test",
+  "name": "leetcode-d3",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
-    "d3": "7.3.0",
-    "vue": "3.2.25"
+    "d3": "7.4.4",
+    "vue": "3.2.33"
   },
   "devDependencies": {
     "@types/d3": "7.1.0",
-    "@vitejs/plugin-vue": "2.1.0",
-    "typescript": "4.5.5",
-    "vite": "2.7.13",
-    "vitepress": "0.21.6",
-    "vue-tsc": "0.31.1"
+    "@vuepress/bundler-vite": "2.0.0-beta.39",
+    "typescript": "4.6.3",
+    "vite": "2.9.5",
+    "vue-tsc": "0.34.7",
+    "vuepress": "2.0.0-beta.39"
   }
 }
