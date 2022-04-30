@@ -8,7 +8,7 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
   title: "LeetCode D3",
   description: "LeetCode D3",
 
-  base: "/",
+  base: "/leetcode-d3/",
 
   head: [["link", { rel: "icon", href: "/favicon.ico" }]],
 
