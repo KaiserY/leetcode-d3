@@ -8,7 +8,9 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
   title: "LeetCode D3",
   description: "LeetCode D3",
 
-  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
+  base: "/",
+
+  head: [["link", { rel: "icon", href: "/favicon.ico" }]],
 
   // theme and its config
   theme: "@vuepress/theme-default",
