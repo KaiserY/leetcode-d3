@@ -8,7 +8,8 @@ export interface D3Tree {
   height: number;
   width: number;
   cellFontSize: string;
-  selectedID: string;
+  selectedID?: string;
+  selectedEdge?: [string, string];
 }
 
 export interface D3TreeNode {
@@ -43,11 +44,22 @@ export function drawD3Tree(
   var nodes = treeData.descendants();
   var links = treeData.descendants().slice(1);
 
-  var selectedNode = nodes.find((d) => tree.selectedID == d.data.id);
-
   nodes.forEach((d) => (d.data.selected = false));
 
+  var selectedNode = nodes.find((d) => tree.selectedID == d.data.id);
+
   selectedNode?.ancestors().forEach((d) => (d.data.selected = true));
+
+  var selectedEdgeStart = nodes.find(
+    (d) => tree.selectedEdge?.[0] == d.data.id
+  );
+  var selectedEdgeEnd = nodes.find((d) => tree.selectedEdge?.[0] == d.data.id);
+
+  if (selectedEdgeEnd != undefined && selectedEdgeStart != undefined) {
+    selectedEdgeStart
+      .path(selectedEdgeEnd)
+      .forEach((d) => (d.data.selected = true));
+  }
 
   gD3Tree
     .selectAll("g.node")

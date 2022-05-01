@@ -17,7 +17,7 @@ onMounted(() => {
 
   var inputMatrix: D3Matrix = {
     id: "inputMatrix",
-    data: [["2", "7", "11", "15"]],
+    data: [[2, 7, 11, 15]],
     x: 60,
     y: 24,
     cellHeight: 24,
@@ -34,7 +34,7 @@ onMounted(() => {
 
   var outputMatrix: D3Matrix = {
     id: "outputMatrix",
-    data: [["", ""]],
+    data: [],
     x: 60,
     y: 72,
     cellHeight: 24,
@@ -44,11 +44,7 @@ onMounted(() => {
 
   var tMapMatrix: D3Matrix = {
     id: "tMapMatrix",
-    data: [
-      ["k", "v"],
-      ["", ""],
-      ["", ""],
-    ],
+    data: [],
     x: 280,
     y: 24,
     cellHeight: 24,
@@ -56,65 +52,68 @@ onMounted(() => {
     cellFontSize: "8px",
   };
 
-  drawD3Matrix(d3js, inputMatrix);
-  drawD3MatrixVLine(d3js, inputMatrix, inputMatrixVLine);
-  drawD3Matrix(d3js, outputMatrix);
-  drawD3Matrix(d3js, tMapMatrix);
+  var stepIndex = 0;
 
-  var step = 0;
+  var steps: Step[] = [{
+    i: 0,
+    m: [],
+    output: [],
+  }];
+
+  twoSum([2, 7, 11, 15], 9, steps);
 
   setInterval(() => {
-    switch (step) {
-      case 0:
-        inputMatrixVLine.index = 0;
-        tMapMatrix.data = [
-          ["k", "v"],
-          ["", ""],
-          ["", ""],
-        ];
-        outputMatrix.data = [["", ""]];
-        break;
-      case 1:
-        inputMatrixVLine.index = 0;
-        tMapMatrix.data = [
-          ["k", "v"],
-          ["2", "0"],
-          ["", ""],
-        ];
-        outputMatrix.data = [["", ""]];
-        break;
-      case 2:
-        inputMatrixVLine.index = 1;
-        tMapMatrix.data = [
-          ["k", "v"],
-          ["2", "0"],
-          ["", ""],
-        ];
-        outputMatrix.data = [["", ""]];
-        break;
-      case 3:
-        inputMatrixVLine.index = 1;
-        tMapMatrix.data = [
-          ["k", "v"],
-          ["2", "0"],
-          ["", ""],
-        ];
-        outputMatrix.data = [["0", "1"]];
-        break;
-    }
+    inputMatrixVLine.index = steps[stepIndex].i;
+    tMapMatrix.data = steps[stepIndex].m;
+    outputMatrix.data = [steps[stepIndex].output];
 
     drawD3Matrix(d3js, inputMatrix);
     drawD3MatrixVLine(d3js, inputMatrix, inputMatrixVLine);
     drawD3Matrix(d3js, outputMatrix);
     drawD3Matrix(d3js, tMapMatrix);
 
-    if (step > 3) {
-      step = 0;
-    } else {
-      step += 1;
+    stepIndex += 1;
+
+    if (stepIndex >= steps.length) {
+      stepIndex = 0;
     }
   }, 2000);
 });
+
+function twoSum(nums: number[], target: number, steps: Step[]): number[] {
+  var m: Map<number, number> = new Map();
+
+  for (let i = 0; i < nums.length; i++) {
+    let t = target - nums[i];
+
+    let x = m.get(t);
+
+    let mMap: number[][] = [];
+
+    m.forEach((value: number, key: number) => {
+      mMap.push([key, value]);
+    });
+
+    if (x != undefined) {
+
+      steps.push({ i: i, m: mMap, output: [x, i] });
+      return [x, i];
+    } else {
+      steps.push({ i: i, m: mMap, output: [] });
+      m.set(nums[i], i);
+    }
+  }
+
+  steps.push({ i: nums.length - 1, m: [], output: [] });
+
+  return [];
+};
+
+interface Step {
+  i: number;
+  m: number[][];
+  output: any[];
+}
 
 const d3svg = ref();
 </script>

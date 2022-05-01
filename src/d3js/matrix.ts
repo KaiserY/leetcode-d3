@@ -23,6 +23,7 @@ export interface D3MatrixHLine {
   id: string;
   name: string;
   index: number;
+  left: boolean;
 }
 
 export interface D3MatrixPoint {
@@ -53,7 +54,6 @@ export function drawD3Matrix(
     xLength = Math.max(xLength, matrix.data[i].length);
   }
 
-  var dataLength = xLength * yLength;
   var renderX: number[] = [];
   var renderY: number[] = [];
 
@@ -280,6 +280,142 @@ export function drawD3MatrixVLine(
           .attr("y", (_, i) => {
             return matrix.cellHeight * i;
           }),
+      (exit) => exit
+    );
+}
+
+export function drawD3MatrixHLine(
+  d3js: d3.Selection<any, unknown, null, undefined>,
+  matrix: D3Matrix,
+  matrixHLine: D3MatrixHLine
+) {
+  var gD3MatrixHLine: d3.Selection<any, unknown, null, undefined> = d3js.select(
+    "#" + matrixHLine.id
+  );
+
+  if (gD3MatrixHLine.empty()) {
+    gD3MatrixHLine = d3js.append("g").attr("id", matrixHLine.id).lower();
+  }
+
+  gD3MatrixHLine
+    .attr("transform", "translate(" + matrix.x + ", " + matrix.y + ")")
+    .lower();
+
+  gD3MatrixHLine
+    .append("svg:defs")
+    .append("svg:marker")
+    .attr("id", "arrow")
+    .attr("refX", 6)
+    .attr("refY", 6)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("viewBox", "0 0 12 12")
+    .attr("orient", "auto")
+    .append("path")
+    .attr("d", "M2,2 L10,6 L2,10 L6,6 L2,2")
+    .style("stroke", "black");
+
+  var baseX = 0;
+  var baseY = matrix.cellHeight / 2 + matrix.cellHeight * matrixHLine.index;
+
+  if (!matrixHLine.left) {
+    baseX = matrix.data[matrixHLine.index].length * matrix.cellWidth;
+  }
+
+  gD3MatrixHLine
+    .selectAll("line")
+    .data([matrixHLine.index])
+    .join(
+      (enter) => {
+        var line = enter.append("line");
+        line
+          .attr("x1", matrixHLine.left ? baseX - 12 : baseX + 12)
+          .attr("y1", baseY)
+          .attr("x2", matrixHLine.left ? baseX - 6 : baseX + 6)
+          .attr("y2", baseY)
+          .attr("stroke", "black")
+          .attr("stroke-width", 1)
+          .attr("marker-end", "url(#arrow)")
+          .style("opacity", 0)
+          .transition()
+          .duration(500)
+          .style("opacity", 1);
+        return line;
+      },
+      (update) =>
+        update
+          .transition()
+          .duration(500)
+          .ease(d3.easeLinear)
+          .attr("x1", matrixHLine.left ? baseX - 12 : baseX + 12)
+          .attr("y1", baseY)
+          .attr("x2", matrixHLine.left ? baseX - 6 : baseX + 6)
+          .attr("y2", baseY),
+      (exit) => exit
+    );
+
+  gD3MatrixHLine
+    .selectAll("text")
+    .data([matrixHLine.index])
+    .join(
+      (enter) => {
+        var text = enter.append("text");
+        text
+          .attr("x", matrixHLine.left ? baseX - 24 : baseX + 24)
+          .attr("y", baseY)
+          .attr("font-family", "Arial Black")
+          .attr("font-size", matrix.cellFontSize)
+          .attr("fill", "black")
+          .style("text-anchor", "middle")
+          .style("alignment-baseline", "central")
+          .text(matrixHLine.name + "=" + matrixHLine.index)
+          .style("opacity", 0)
+          .transition()
+          .duration(500)
+          .style("opacity", 1);
+        return text;
+      },
+      (update) =>
+        update
+          .transition()
+          .duration(500)
+          .ease(d3.easeLinear)
+          .attr("x", matrixHLine.left ? baseX - 24 : baseX + 24)
+          .attr("y", baseY)
+          .text(matrixHLine.name + "=" + matrixHLine.index),
+      (exit) => exit
+    );
+
+  var renderRect: number[] = [];
+
+  for (let i = 0; i < matrix.data[matrixHLine.index].length; i++) {
+    renderRect[i] = 0;
+  }
+
+  gD3MatrixHLine
+    .selectAll("rect")
+    .data(renderRect)
+    .join(
+      (enter) =>
+        enter
+          .append("rect")
+          .attr("x", (_, i) => {
+            return matrix.cellWidth * i;
+          })
+          .attr("y", matrixHLine.index * matrix.cellHeight)
+          .attr("height", matrix.cellHeight)
+          .attr("width", matrix.cellWidth)
+          .style("fill", "gray")
+          .style("opacity", 0.5),
+      (update) =>
+        update
+          .transition()
+          .duration(500)
+          .ease(d3.easeLinear)
+          .attr("x", (_, i) => {
+            return matrix.cellWidth * i;
+          })
+          .attr("y", matrixHLine.index * matrix.cellHeight),
       (exit) => exit
     );
 }
