@@ -130,8 +130,6 @@ onMounted(() => {
   }, 2000);
 });
 
-
-
 function calcEquation(equations: string[][], values: number[], queries: string[][], steps: Step[]): number[] {
   var graph: Map<String, [string, number][]> = new Map();
 
