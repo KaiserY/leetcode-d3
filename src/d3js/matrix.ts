@@ -161,6 +161,11 @@ export function drawD3MatrixVLine(
     gD3MatrixVLine = d3js.append("g").attr("id", matrixVLine.id).lower();
   }
 
+  if (matrixVLine.index < 0) {
+    gD3MatrixVLine.selectAll("*").remove();
+    return;
+  }
+
   gD3MatrixVLine
     .attr("transform", "translate(" + matrix.x + ", " + matrix.y + ")")
     .lower();
@@ -295,6 +300,11 @@ export function drawD3MatrixHLine(
 
   if (gD3MatrixHLine.empty()) {
     gD3MatrixHLine = d3js.append("g").attr("id", matrixHLine.id).lower();
+  }
+
+  if (matrixHLine.index < 0) {
+    gD3MatrixHLine.selectAll("*").remove();
+    return;
   }
 
   gD3MatrixHLine
