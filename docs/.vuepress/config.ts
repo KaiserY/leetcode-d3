@@ -1,8 +1,7 @@
-import type { ViteBundlerOptions } from "@vuepress/bundler-vite";
+import { defaultTheme, viteBundler } from "vuepress";
 import { defineUserConfig } from "@vuepress/cli";
-import type { DefaultThemeOptions } from "@vuepress/theme-default";
 
-export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
+export default defineUserConfig({
   // site config
   lang: "en-US",
   title: "LeetCode D3",
@@ -13,16 +12,15 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
   head: [["link", { rel: "icon", href: "/favicon.ico" }]],
 
   // theme and its config
-  theme: "@vuepress/theme-default",
-  themeConfig: {
-    logo: "/logo.png",
-  },
+  theme: defaultTheme({
+    themeConfig: {
+      logo: "/logo.png",
+    },
+  }),
 
   // when using vuepress-vite package, you can omit this field
   // because vite is the default bundler
-  bundler: "@vuepress/bundler-vite",
-  // options for vite bundler
-  bundlerConfig: {
+  bundler: viteBundler({
     viteOptions: {
       root: "docs",
       optimizeDeps: {
@@ -33,5 +31,5 @@ export default defineUserConfig<DefaultThemeOptions, ViteBundlerOptions>({
         noExternal: ["d3", "d3-drag", "d3-force", "d3-selection", "d3-zoom"],
       },
     },
-  },
+  }),
 });

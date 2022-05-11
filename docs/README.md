@@ -29,4 +29,5 @@
 - [27. Remove Element](leetcode/p27.md)
 - [399. Evaluate Division](leetcode/p399.md)
 - [581. Shortest Unsorted Continuous Subarray](leetcode/p581.md)
+- [1641. Count Sorted Vowel Strings](leetcode/p1641.md)
 - [1679. Max Number of K-Sum Pairs](leetcode/p1679.md)
